@@ -7,8 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+<<<<<<< HEAD
     "preview": "vite preview",
     "test": "jest"
+=======
+    "preview": "vite preview"
+>>>>>>> 3a2eecc674a9e861161d8497deb71f70308d697b
   },
   "dependencies": {
     "bootstrap": "^5.3.6",
@@ -16,6 +20,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@babel/preset-env": "^7.29.0",
     "@babel/preset-react": "^7.28.5",
     "@eslint/js": "^9.25.0",
@@ -24,11 +29,20 @@
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "babel-jest": "^30.3.0",
+=======
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+>>>>>>> 3a2eecc674a9e861161d8497deb71f70308d697b
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+<<<<<<< HEAD
     "jest": "^30.3.0",
+=======
+>>>>>>> 3a2eecc674a9e861161d8497deb71f70308d697b
     "vite": "^6.3.5"
   }
 }

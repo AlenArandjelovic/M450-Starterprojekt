@@ -17,7 +17,11 @@ import ch.wiss.m450.starter_project.repository.ItemRepository;
 @CrossOrigin
 public class ItemController {
     @Autowired
+<<<<<<< HEAD
     public ItemRepository _itemRepository;
+=======
+    private ItemRepository _itemRepository;
+>>>>>>> 3a2eecc674a9e861161d8497deb71f70308d697b
 
     @GetMapping
     public Iterable<Item> getItems() {
