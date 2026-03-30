@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,6 @@ import ch.wiss.m450.starter_project.service.ItemService;
 public class ItemController {
 
     private final ItemRepository itemRepository;
-
-    // Constructor Injection (SonarQube-konform)
     private final ItemService itemService;
 
     public ItemController(ItemRepository itemRepository, ItemService itemService) {
@@ -29,31 +28,20 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    // Optional: Getter für Tests (falls benötigt)
-    public ItemRepository getItemRepository() {
-        return itemRepository;
-    }
-
     @GetMapping
-    public Iterable<Item> getItems() {
+    public List<Item> getItems() {
         List<Item> items = (List<Item>) itemRepository.findAll();
         return itemService.sortItems(items);
     }
-    /*
-     * @GetMapping
-     * public Iterable<Item> getItems() {
-     * return itemRepository.findAll();
-     * }
-     */
 
-    @PostMapping("/{itemName}")
-    public void addItem(@PathVariable String itemName) {
-        Item newItem = new Item(itemName);
-        itemRepository.save(newItem);
+    // Neues Item hinzufügen (JSON Body: { "name": "Banana", "deadline": "2026-03-31T12:00" })
+    @PostMapping
+    public Item addItem(@RequestBody Item item) {
+        return itemService.addItem(item);
     }
 
     @DeleteMapping("/{itemId}")
     public void deleteItem(@PathVariable int itemId) {
-        itemRepository.deleteById(itemId);
+        itemService.deleteItem(itemId);
     }
 }

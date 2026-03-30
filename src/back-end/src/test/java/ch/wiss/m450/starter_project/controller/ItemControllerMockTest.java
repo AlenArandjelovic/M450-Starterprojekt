@@ -65,7 +65,7 @@ void getItems_returnsItems() {
     // --------------------
     @Test
     void addItem_callsSave() {
-        controller.addItem("Banana");
+        controller.addItem(Banana);
 
         // prüft, welches Item an save übergeben wurde
         verify(repo).save(itemCaptor.capture());

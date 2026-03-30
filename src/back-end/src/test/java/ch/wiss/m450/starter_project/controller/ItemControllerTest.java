@@ -3,6 +3,7 @@ package ch.wiss.m450.starter_project.controller;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,44 +18,44 @@ public class ItemControllerTest {
     @Test
     void getItems_returnsItems() {
 
-        ItemRepository repo = mock(ItemRepository.class);
+        // Mocks
         ItemService service = mock(ItemService.class);
 
         Item item = new Item("Apple");
-
-        when(repo.findAll()).thenReturn(List.of(item));
         when(service.sortItems(any())).thenReturn(List.of(item));
 
-        ItemController controller = new ItemController(repo, service);
+        // Controller mit gemocktem Service
+        ItemController controller = new ItemController(null, service);
 
         Iterable<Item> result = controller.getItems();
 
-        assert (result.iterator().next().getName().equals("Apple"));
+        // JUnit Assertion
+        assertEquals("Apple", result.iterator().next().getName());
     }
 
     @Test
     void addItem_savesItem() {
 
-        ItemRepository repo = mock(ItemRepository.class);
         ItemService service = mock(ItemService.class);
 
-        ItemController controller = new ItemController(repo, service);
+        ItemController controller = new ItemController(null, service);
 
-        controller.addItem("Banana");
+        controller.addItem(new Item("Banana"));
 
-        verify(repo).save(any(Item.class));
+        // Prüft, dass Service.addItem aufgerufen wurde
+        verify(service).addItem(any(Item.class));
     }
 
     @Test
     void deleteItem_callsDelete() {
 
-        ItemRepository repo = mock(ItemRepository.class);
         ItemService service = mock(ItemService.class);
 
-        ItemController controller = new ItemController(repo, service);
+        ItemController controller = new ItemController(null, service);
 
         controller.deleteItem(1);
 
-        verify(repo).deleteById(1);
+        // Prüft, dass Service.deleteItem aufgerufen wurde
+        verify(service).deleteItem(1);
     }
 }
