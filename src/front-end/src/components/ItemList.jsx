@@ -1,3 +1,4 @@
+// ItemList.jsx
 import { useState, useEffect } from "react";
 import ItemRow from "./ItemRow";
 
@@ -6,11 +7,18 @@ function ItemList() {
 
   useEffect(() => {
     fetch("http://localhost:8080/items")
-      .then(
-        (response) =>
-          (response.ok && response.json()) || Promise.reject(response)
+      .then((response) =>
+        response.ok ? response.json() : Promise.reject(response)
       )
-      .then((data) => setItems(data))
+      .then((data) => {
+        // Sortieren: Items mit Deadline zuerst, früheste Deadline oben
+        const sorted = [...data].sort((a, b) => {
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(a.deadline) - new Date(b.deadline);
+        });
+        setItems(sorted);
+      })
       .catch((error) => console.error(error));
   }, []);
 

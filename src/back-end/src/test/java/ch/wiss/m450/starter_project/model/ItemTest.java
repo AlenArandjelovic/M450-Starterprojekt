@@ -1,5 +1,8 @@
 package ch.wiss.m450.starter_project.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -10,6 +13,7 @@ import org.mockito.Spy;
 
 import ch.wiss.m450.starter_project.controller.ItemController;
 import ch.wiss.m450.starter_project.repository.ItemRepository;
+import ch.wiss.m450.starter_project.service.ItemService;
 
 public class ItemTest {
 
@@ -55,4 +59,56 @@ public class ItemTest {
         item.setId(42);
         assertEquals(42, item.getId());
     }
+
+    @Test
+    void shouldDetectOverdueItem() {
+        Item item = new Item("Test");
+        item.setDeadline(LocalDateTime.now().minusDays(1));
+
+        assertEquals(true, item.isOverdue());
+    }
+
+    @Test
+    void shouldSortItemsByDeadline() {
+        Item item1 = new Item("Late");
+        item1.setDeadline(LocalDateTime.now().plusDays(5));
+
+        Item item2 = new Item("Soon");
+        item2.setDeadline(LocalDateTime.now().plusDays(1));
+
+        List<Item> items = List.of(item1, item2);
+
+        ItemService service = new ItemService();
+
+        List<Item> sorted = service.sortItems(items);
+
+        assertEquals("Soon", sorted.get(0).getName());
+    }
+
+    @Test
+void shouldReturnTrueIfDeadlinePassedAndNotClosed() {
+    Item item = new Item("Test");
+    item.setDeadline(LocalDateTime.now().minusDays(1));
+    item.setStatus(ItemStatus.OPEN);
+
+    assertEquals(true, item.isOverdue());
+}
+
+@Test
+void shouldReturnFalseIfDeadlineInFuture() {
+    Item item = new Item("Test");
+    item.setDeadline(LocalDateTime.now().plusDays(1));
+    item.setStatus(ItemStatus.OPEN);
+
+    assertEquals(false, item.isOverdue());
+}
+
+@Test
+void shouldReturnFalseIfClosed() {
+    Item item = new Item("Test");
+    item.setDeadline(LocalDateTime.now().minusDays(1));
+    item.setStatus(ItemStatus.CLOSED);
+
+    assertEquals(false, item.isOverdue());
+}
 }

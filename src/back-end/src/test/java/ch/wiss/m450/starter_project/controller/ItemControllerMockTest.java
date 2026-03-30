@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import ch.wiss.m450.starter_project.model.Item;
 import ch.wiss.m450.starter_project.repository.ItemRepository;
+import ch.wiss.m450.starter_project.service.ItemService;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemControllerMockTest {
@@ -24,6 +26,9 @@ public class ItemControllerMockTest {
     // 1. Repository wird gemockt
     @Mock
     private ItemRepository repo;
+    
+    @Mock
+    private ItemService service;
 
     // 2. Controller bekommt automatisch das Mock-Repository
     @InjectMocks
@@ -40,16 +45,20 @@ public class ItemControllerMockTest {
     // --------------------
     // Mock Test 1: getItems
     // --------------------
-    @Test
-    void getItems_returnsItems() {
-        Item item = new Item("Apple");
-        when(repo.findAll()).thenReturn(List.of(item));
+@Test
+void getItems_returnsItems() {
+    Item item = new Item("Apple");
 
-        Iterable<Item> result = controller.getItems();
+    when(repo.findAll()).thenReturn(List.of(item));
+    when(service.sortItems(any())).thenReturn(List.of(item));
 
-        assertEquals("Apple", result.iterator().next().getName());
-        verify(repo).findAll(); // prüft, dass findAll aufgerufen wurde
-    }
+    Iterable<Item> result = controller.getItems();
+
+    assertEquals("Apple", result.iterator().next().getName());
+    verify(repo).findAll();
+    verify(service).sortItems(any());
+}
+
 
     // --------------------
     // Mock Test 2: addItem

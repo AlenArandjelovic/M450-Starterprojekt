@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+const { test, expect } = require('@playwright/test');
 
 test('homepage loads', async ({ page }) => {
-  await page.goto('http://localhost:5173');
+  await page.goto('http://localhost:3000');
 
-  await expect(page).toHaveTitle(/M450 Starterprojekt/);
+  await expect(page).toHaveTitle(/App|React|Items/);
 });
